@@ -1,0 +1,1971 @@
+function teste2(nota)
+{
+    if(nota > 7) // sim, isto é uma sentença de codigo
+        ;
+
+    {
+        console.log(nota);
+    }
+}
+
+// o ; ali é uma instrução vazia. então, console.log(nota) sempre será impresso, não tem condiçao pra isso.
+
+const imprimirResultado = function teste2(nota)
+{
+    if(nota >= 7)
+    {
+        console.log('Aprovado');
+    }
+    else
+    {
+        console.log('Reprovado');
+    }
+}
+
+imprimirResultado('Epa'); // vai ser false, vai imprimir 'reprovado', por falha do javascript, q é uma linguagem fracamente tipada
+
+Number.prototype.entre = function (inicio, fim)
+{
+    return this >= inicio&& this <= fim
+}
+
+const imprimirResultado = function (nota)
+{
+    if(nota.entre(9,10))
+    {
+        console.log('Quadro de Honra');
+    }
+    else if (nota.entre(7, 8.99))
+    {
+        console.log('Aprovado');
+    }
+    else if (nota.entre(4, 6.99))
+    {
+        console.log('Recuperação');
+    }
+    else if (nota.entre(70, 3.99))
+    {
+        console.log('Reprovado');
+    }
+}
+
+imprimirResultado(8.5);
+imprimirResultado(5);
+
+---
+com switch: melhor pra necessidades multiplas
+
+const imprimirResultado = function (nota)
+{
+    switch(Math.floor(nota)){
+        case 10:
+        case 9:
+            console.log('Quadro de Honra');
+        case 8: case 7:
+            console.log('Aprovado');
+        case 6: case 5: case 4:
+            console.log('Recuperação');
+        case 3: case 2: case 1:
+            console.log('Reprovado');
+        default:
+            console.log("Nota inválida");
+    }
+}
+
+imprimirResultado(4);
+
+
+////////// 
+
+- WHILE:
+
+function getInteiroAleatorioEntre(min, max)
+{
+    const valor = Math.random() * (max-min) + min
+    return Math.floor(valor);
+}
+
+let opcao = -1;
+
+// enquanto a expressão for verdadeira, continue executando o laço até q seja falso
+while (opcao != -1)
+{
+    opcao = getInteiroAleatorioEntre(-1, 10); // o valor tá sendo alterado pela função
+    console.log('A opção escolhida foi `${opcao}`');
+}
+
+// ele tá sempre sorteando, até q saia um -1.
+
+//////////////////////////////
+
+const notas = [6.5, 7.5, 9.0, 3.2, 4.1];
+
+for(let i = 0; i < notas.length; i++)
+{
+    console.log(`A nota agora é: ${notas[i]}`);
+}
+
+///////////////////
+
+FOR IN:
+const notas = [6.7, 7.4, 8.3, 7.7];
+
+// o FOR IN vai te dar os indices do elemento, como se fosse te dar os atributos de um array (ex.: o 1 elemento do array é 0, o 2 elemento do arary é 1). foreach é melhor.
+
+for (let i in notas) // para cada um dos elementos de notas vai te devolver um indice 'i'. bom usar 'let' para garantir que 'i' estará apenas naquele laço, isto é, variavel local daquele laço, presente apenas neste escopo.
+{
+    console.log(i, notas[i]); // vai mostrar os indices e o que há dentro de cada índice
+} 
+
+
+
+-- Outro exemplo:
+
+const pessoa = {
+    nome: 'Gustavo',
+    sobrenome: 'Marcon',
+    idade: 20,
+    peso: 60
+}
+
+for(let atributo in pessoa)
+{
+    console.log(`${atributo} : ${pessoaNova[atributo]}`);
+}
+
+///////////////
+
+Usando break e continue:
+
+const nums = [1,2,3,4,5,6,7,8,9,10];
+
+for (x in nums){
+    if (x==5) break;
+    console.log(`x = ${nums[x]}`);
+}
+
+for (y in nums)
+{
+    if (y==5) continue; // 'continue' simplesmente interrompe a repetição corrente e vai para a proxima repetição
+    console.log(`${y} = ${nums[y]}`);
+}
+
+// Agora com pares:
+externo: for (a in nums) // atr
+{
+    for(b in nums)
+    {
+        if(a == 2 && b == 3) break externo
+        console.log(`Par = ${a}, ${b}`);
+    }
+}
+
+/\ criei um rotulo chamado 'externo', e esse rotulo fica associado a um laço 'for'. dentro deste for, criei um outro for q teoricamente seria um for interno, onde 'a' sempre o indice de nums, e b sendo indice de nums também. se eu não tivesse colocado 'break externo', e sim apenas 'break', ele iria chamar apenas o break do for "interno" (q é o b in nums), pq é o laço mais proximo do break. se eu quiser criar um break mais externo, so a partir de um rotulo, por isso tenho o 'externo'.
+
+/\ Isso já nem é mais muito utilizado, melhor quebrar em métodos, foreach, etc.
+
+
+--------------
+
+Função:
+// Criar de forma literal
+function func1() { } // toda função retorna ao menos algum valor. se não definir o retorno, ele retorna ao menos undefined. o bloco em função é obrigatorio
+
+// Armazenar em uma variável:
+const fun2 = function () { }
+
+// Armazenar em um array:
+const array = [function (a,b) { return a + b }, fun1, fun2]; // posso armazenar criando uma funçao anonima direto, ou criar uma funçao armazenando em uma variavel e colocar esta variavel no array
+
+console.log(array[0](2,3)); // chamei ali o array de indice 0, q é uma funçao e, a essa funçao, passei os parametros '2' e '3'
+
+// Armazenando em um atributo de objeto:
+const obj = {}; // aqui criei um objeto, lembre-se, {} define objeto
+
+obj.falar = function () { return 'Opa' };
+
+console.log(obj.falar()); // tem q colocar os parenteses () para de fato invocar a função
+
+// Passar função como parametro para outra função:
+function run (fun) // criei uma função chamada run, recebe como parametro 'fun' ( espero receber como parametro uma função)
+{
+    fun(); // executando uma função, graças ao o que ta entre parenteses.
+}
+
+run(function () { console.log('Executando....') }); // chamei e passei como parametro uma função. aqui, não to executando uma função, apenas em fun(), dentro da função fun.
+
+// Além de conseguir passar como parametro, tbm é possivel retornar uma função como parametro.
+
+// Uma função pode retornar/conter uma/outra função
+function soma(a,b) {
+    return function(c) {
+        console.log(a+b+c);
+    }
+}
+
+soma(2,3)(4); // é uma forma de fazer chamando a função soma e depois já chamar diretamente a outra função. passei primeiro o parametro de 'soma' e depois o parametro da funçao q ta retornando a tal função. o resultado aí será 9.
+
+const cincoMais = soma(2,3); // mas tb posso armazenar o resultado dessa variável em uma constante/variável e depois usar essa constante/variável pra continuar a chamada da função
+cincoMais(4);
+
+////////////
+
+- Parâmetros e retorno são opcionais
+function area(largura, altura)
+{
+    const area = largura * altura;
+    if(area > 20)
+    {
+        console.log(`Valor acima do permitido: ${area}m2`);
+    }
+    else
+    {
+        return area
+    }
+}
+
+console.log(area(2,2)); // vai executar normalmente
+console.log(area(2)); // vai dar NaN, pq simplesmente não tem o 2 parametro.
+console.log(area()); // só dá NaN
+console.log(area(2,3,17,22,44)); // vai ler apenas os 2 primeiros e vai ignorar o resto 
+ 
+////////////////
+
+Parametros variáveis -
+function soma() // o fato de não receber nenhum parametro não significa que não se pode passar nenhum parametro, mas pode passar parametro sim, e dentro da função recuperar esses parametros a partir de uma propriedade chamada arguments
+{
+    let soma = 0;
+    for (i in arguments) // arguments é um array, e com 'i' vou pegar o indice de cada elemento do array. posso pegar cada um dos elementos e ir somando a variavel soma. arguments é o array interno de uma função que tem todos os argumentos q foram passados.
+    { 
+        soma += arguments[i];
+    }
+    return soma; // aq é o resultado de todas as somas q passei
+}
+console.log(soma()); // resulta '0', é a soma total
+console.log(soma(1)); // resulta em 1
+console.log(soma(1.1, 2.2, 3.3)); // resulta em 6.6, soma de tudo
+// ele não se limita apenas a numero, claro, se vc der:
+console.log(soma(1.1, 2.2, "testeeweee")); // vai resultar na soma de 1.1 com 2.2 e juntar com 'testeeweeee'
+
+// ---> tem outros operadores, como o rest, veremos pra frente
+
+-----------------
+
+parametro padrão-
+function soma1(a,b,c) // vc vai receber valor a, b e c de uma soma
+{
+    a = a || 1; // a vai receber 'a' se for true, se for false ele recebe '1'
+    b = b || 1; // a vai receber 'a' se for true, se for false ele recebe '1'
+    c = c || 1;
+    return a + b + c; // com ctz ele não vai ser um valor nulo ou undefined, pq se for false, recebe '1' como valor
+}
+console.log(soma1(), soma1(1,2,3), soma1(0,0,0)); // primeiro vai retornar '3' (pq é a soma de 1+1+1). depois, vai retornar 5. dps, mesmo passando '0,0,0', ele vai retornar '3', pq '0' é sempre false, então ele gera '1' [daí a soma de cada um pra dar 3].
+
+
+// outras estratégias pra gerar um valor padrão
+function soma2(a,b,c)
+{
+    a = a !== undefined ? a : 1; // 1º estratégia: a vai receber o seguinte: se a for diferente de undefined (se tiver algum valor), ela recebe o valor de 'a', q foi dado no parametro, senão, recebe como padrão o valor '1'.
+    b = 1 in arguments? b : 1; // 2º estrategia - dentro de 'arguments' existe o valor 1? se existir, b pega o valor de b, senão, pega o valor '1' como padrão. aqui é '1 in arguments' pq 'b' é de indice '1', se fosse 'a' seria '0 in arguments? [...]'
+    c = isNaN(c) ? 1 : c; // essa é a estrategia mais segura para valores numericos.
+    return a + b + c;
+}
+console.log(soma2(1,2,3)); // soma todos normalmente
+console.log(soma2()); // vai mostrar '3', pq recebeu valor padra
+console.log(soma2(1)); // vai mostrar '3', mas recebeu o primeiro parametro (a) mas caiu em true, b e c receberam 1 como valor padrão pq cairam em false
+console.log(soma2(5,6)); // vai mostrar '12', pq a e b tão em true, fizeram soma, mas c tá em false e caiu como valor padrão '1'.
+console.log(soma2(5,6,"Olá")); // mesma coisa do de cima.
+
+// MAS, tem a melhor forma como valor numerico:
+function soma3(a = 1, b = 1, c = 1)
+{
+    return a + b + c;
+}
+console.log(soma3(), soma3(3), soma3(1,2,3), soma3(0,0,0)); // vai sempre receber '1' como padrão caso não definido
+
+// o valor padrao acima de funçao é pra colocar em parametros de funçao, mas se tiver criado variavel dentro de funçao e quer ter um valor padrão, é mt usado o que foi colocado acima: "a = a || 1"
+
+//////////////
+
+'this' pode variar:
+
+this é sempre o objeto que está sendo referenciado naquele contexto de execuçao, q é o dono daquela funçao q ta sendo executado. dependendo, o this pode apontar para outra coisa.
+
+function f1() { console.log(this === window)}
+f1(); // vai mostrar true.
+
+// o this pode variar, ali de fato o this aponta pro objeto global q é o window, mas se eu chamar ela a partir de um click em qualquer elemento na pagina e mesmo a pagina vazia, ele vai disparar a chamada a função f1. quando eu disparar a função a partir do click do mouse, o 'this' no contexto já não será mais objeto global.
+vejamos este teste:
+document.getElementsByTagName('body')[0].onclick = f1; // chamei o primeiro elemento, q é [0], pois quando voce pega getelementsbytagname, mesmo q vc passe uma tag q tenha um elemento, no caso é esperado q tenha uma pagina com um unico body. no caso vai retornar array e vamos pegar o elemento de indice 0, no caso, o primeiro body de uma determinada página, mas é esperado q tenha apenas um body. ao dar enter, e ao clicar na pagina, verá tá chamando a função e AGORA, imprimindo 'false', pois 'this' varia de acordo com a forma como voce chama a função.
+
+// se eu repetir, criando uma função f2, mas agora, em vez de 'this === window' e sim 'this === document', vai dar false também.
+
+// AGORA.... SE EU GUARDAR DENTRO DE UMA CONSTANTE QUALQUER, CHAMADA 'BODY' (chamei disso)
+const body = document.getElementsByTagName('body')[0]
+
+// Agora, vou verificar se é igual ao body:
+function f2() { console.log(this === body) }
+
+document.getElementsByTagName('body')[0].onclick = f2;
+// clico na pagina agora, verá q vai dar 'true'. nesse caso, quem representa o this quando chamo f2, é o proprio elemento q to clicando.
+
+// mas, se eu chamar f2 diretamente, verá que não é o body que tá apontando pro this, e sim o objeto window, pois dará false();
+f2(); // dará false
+
+// com Função Arrow:
+const f3 = () => console.log(this === window);
+f3(); // dará true
+
+// um grande motivo de ter funçao arrow, é que o 'this' não varia. veja:
+f3(); // vai dar true
+// mas, se eu chamar a partir do clique:
+document.getElementsByTagName('body')[0].onclick = f3;
+// ao clicar na pagina, vai dar 'true' também.
+
+mas, ao ter funçao normal deu false... pq? pois qd vc tem funçao com a palavra function, o this pode variar de acordo com quem chamou a função. então, o this pode variar. o this representa window? depende de como chamou a funçao. representa o elemento q cliquei? depende de como vc chamou a função. MAS, se for definido como FUNÇÃO ARROW, ele não varia NUNCA.
+
+----> Se a função for definida como FUNÇÃO ARROW, o 'this' não varia NUNCA. com onclick é true, com window é true, etc.
+
+///////////////
+
+this e a função 'bind' 
+const pessoa = { 
+    saudacao: 'Olá, bom dia',
+    falar(){ // voce pode criar um metodo assim também, sem definir function etc
+        console.log(this.saudacao); // to acessando o objeto do qual é o dono dessa função, no caso aqui, é o objeto 'pessoa'. sem o 'this' nao vai dar certo.
+    }
+}
+
+pessoa.falar(); // vai mostrar 'Olá, bom dia'.
+
+// vou armazenar agora essa função 'falar' em uma variável, vai dar um conflito no caso
+const falar = pessoa.falar;
+falar(); // vai dar undefined, o fato de eu armazenar uma função numa variavel, nesse contexto não to chamando a função 'falar' a  partir do contexto 'pessoa'. 'falar' aqui tá dentro de outro contexto. há conflito entre paradigmas: funcional e OO
+
+// agora, veja:
+const falarDePessoa = pessoa.falar.bind(); // o bind voce passa um objeto que voce quer q seja resolvido o 'this'. quem é o this dentro da função 'falar'? o 'this' é a constante 'pessoa'.
+falarDePessoa(); // agora vai apontar para o objeto certo. no caso, o 'BIND' é responsavel por amarrar um objeto, pra ele ser o dono da execuçao do metodo. qd chamar a funçao, qd referenciar o this, o this será o objeto q voce passou pra funçao 'bind'
+
+// agora, veja
+function Pessoa()
+{
+    this.idade = 0; // no momento q eu instanciar essa funçao, criar um objeto a partir dessa funçao, vou ter o atributo idade para q eu possa manipular ele.
+    setInterval(function(){
+        this.idade++;
+        console.log(this.idade);
+    }, 1000); // essa função dispara outra funçao a partir de um determinado intervalo q vc passou. e voce pode inclusive passar dentro dos parametros uma funçao anonima, q é oq fizemos. o 'setinterval', alem de receber uma funçao, ele tb recebe um intervalo q no caso colocamos '1000' (em ms). a cada 1000 milisegundos, tal funçao vai ser disparada. para q tudo funcione, vou instanciar um objeto de 'Pessoa'. nao se esqueça o 'this' pode variar e ele varia de acordo com quem ta invocando essa função. quem ta invocando a funçao nao sou eu, eu passei a funçao pro 'setInterval'
+}
+
+new Pessoa; // ao compilar, vai dar só 'NaN'. ai vc ve q o 'this.idade' não aponta pro objeto pessoa, pois quem ta disparando a chamada dessa funçao é um temporizador e nao o objeto Pessoa. pra resolver, faremos:
+
+function Pessoa()
+{
+    this.idade = 0; // no momento q eu instanciar essa funçao, criar um objeto a partir dessa funçao, vou ter o atributo idade para q eu possa manipular ele.
+    setInterval(function(){
+        this.idade++;
+        console.log(this.idade);
+    }.bind(this), 1000); // uma funçao pode chamar outras funçoes, chamamos 'bind' como notaçao ponto e, dentro, passamos 'this' pra amarrar o this do objeto a chamada da funçao.
+}
+
+// agora, faremos:
+function Pessoa()
+{
+    this.idade = 0; 
+    const self = this // self recebe a referência de 'this'. como essa linha ta sendo executado dentro do objeto 'Pessoa', significa que nessa linha 'This' é o objeto que eu quero realmente apontar, que é a instancia atual que foi criada lá embaixo com 'new Pessoa'. e com isso, posso substituir 'this' por 'self'. é uma forma de 'driblar' o fato de 'this' variar, criando uma constante e essa constante ficar dentro da funçao. no caso, o 'self' sempre vai apontar pra pessoa.
+    setInterval(function(){
+        self.idade++; // como ve, substituimos 'this' por 'self'
+        console.log(self.idade);
+    }/*.bind(this)*/, 1000); 
+}
+
+new Pessoa();
+
+// então, vemos q podemos usar o bind ou usar o 'self = this'.
+
+//////////
+
+Função arrow -> o 'this' não varia.
+
+let dobro = function(a)
+{
+    return 2 * a;
+}
+
+/\ reescrevendo em arrow:
+let dobro = (a) => 2 * a; 
+ou
+let dobro = a => { // posso tirar os parenteses de 'a' pq só tenho um parametro
+    return 2 * a;
+}
+
+console.log(dobro(Math.PI));
+
+ola = () => "Olá"; // funçao sem parametros
+console.log(ola);
+
+// posso tbm usar 'underline', q eu to passando na vdd um unico parametro, mas na hr de passar parametro, vc pode ignorar 
+ola = _ => 'Olá'
+console.log(ola());
+
+////////////
+
+o 'this' dentro da funçao arrow é um 'this' fixo, o fato de que a funçao for chamada de locais diferentes nao influencia no 'this'
+
+function Pessoa()
+{
+    this.idade = 0;
+    setInterval(() => {
+        this.idade++;
+        console.log(this.idade);
+    }, 1000) // dentro de setInterval, criei uma funçao arrow
+}
+
+new Pessoa(); // no caso, o 'this' dentro de uma funçao arrow, tá apontando pra 'pessoa', justamente pq o 'this' não varia pq é uma funçao arrow
+
+////////////////
+
+let comparaComThis = function (param){
+    console.log(this === param);
+}
+comparaComThis(global); // vai dar 'true', ta no contexto do node. no browser seria 'window'
+
+const objNew = {}
+comparaComThis = comparaComThis.bind(objNew); // agora botei 'bind', vejamos:
+comparaComThis(global); // vai dar 'false', por conta do 'bind'
+comparaComThis(objNew); // vai dar 'true', o this aponta pro objeto agora por causa do 'bind'
+
+let comparaComThisArrow = param => console.log(this === param); // o this continuará apontando pro global como uma funçao apontaria? verá que não, pois essa funçao foi definida dentro de um 'modulo' do node, e cada arquivo do node representa um modulo. ou seja, o dono dessa funçao seria o proprio modulo. e como referenciar o modulo atual? o 'Arrow' é mais previsivel, o this aponta pro objeto/modulo corrente.
+
+// seria assim entao:
+comparaComThisArrow(module.exports); vai dar true
+
+// this nao é o global em caso de funçao arrow, mas é o module.exports
+
+// e se eu usar 'bind' dentro de uma funçao arrow?
+comparaComThisArrow = comparaComThisArrow.bind(objNew);
+comparaComThisArrow(objNew); // o this continua apontando pro objeto no qual foi escrito, ele nao vai mudar, mesmo com bind.
+comparaComThisArrow(module.exports); // vai dar true.
+
+// Ou seja, o 'this' numa funçao arrow vai apontar pro this no qual a função foi escrita, mesmo com o bind nesse caso.
+
+
+/////////
+
+Funções anonimas -
+função sem nome:
+const soma = function (x,y) { // uma constante recebeu uma funçao anonima
+    return x + y;
+}
+
+
+const imprimirResultado = function (a,b, operacao = soma) { // 'operacao' vai assumir o valor default (soma)
+    console.log(operacao(a,b))
+}
+imprimirResultado(3,4); // 3 e 4 foi para 'x e y' da funçao soma. vai retornar '7'
+imprimirResultado(3,4, soma); // vai dar em nada, mas vai retornar 7 também.
+imprimirResultado(3,4, function(x, y) { 
+    return x - y
+}); // o terceiro parametro é uma funçao, passei uma funçao como parametro. vai dar como resultado '-1'
+imprimirResultado(3,4, (x,y) => x * y); // vai mostrar como resultado '12', passando como terceiro parametro uma arrow function
+
+// outro exemplo de funçao anonima é criar a funçao dentro de outro objeto
+const pessoa = {
+    falar: function() {
+        console.log('Bom dia');
+    }
+}
+pessoa.falar();
+
+// veja acima q na verdade coloquei uma funçao anonima no atributo 'falar' dentro do objeto 'passar'
+podemos deixar assim tbm, tirando o 'function':
+falar()
+{
+    console.log('Opa');
+}
+
+//////////
+
+Callback:
+significa 'chamar de volta'
+
+const fabricantes = ['Mercedes', 'Audi', 'BMW'];
+
+function imprimir(nome, indice)
+{
+    console.log(`${indice + 1}. ${nome}`);
+}
+
+// a ideia do callback é voce passar uma funçao para outra funçao e quando um determinado evento acontecer, essa funçao vai ser chamada de volta. callback pode ser chamada varias vezes se quiser.
+
+// forEach é uma funçao de fabricantes, e fabricantes é um array. pra cada elemento do array, quero que chame a funçao 'imprimir'. e o 'forEach' vai passar como parametro pra essa funçao o nome do elemento q ele ta percorrendo e, como 2 parametro, o indice.
+
+// pra cada elemento q ele encontrar dentro do array, ele vai chamar de volta pra cada elemento q for encontrado, e vai imprimir no console indice e nome
+fabricantes.forEach(imprimir);
+
+// eu poderia fazer:
+fabricantes.forEach(function(fabricante){
+    console.log(fabricante); // passei como parametro uma funçao q tem como parametro 'a'. quem é o valor de 'a' nessa funçao aqui? 
+})
+
+// tbm posso fazer com funçao arrow:
+fabricantes.forEach(fabricante => console.log(fabricante)) // é uma funçao 'fabricante' que retorna console.log
+
+// veja então que o callback é nada mais do que passar uma funçao e essa funçao ser chamada quando um evento acontecer. no caso acima, qual evento q aconteceu? o evento é o loop, quando encontra um novo elemento ele dispara um evento q é a funçao q vc chamou. p/ cada elemento ele chama um callback passando o nome e indice. vc passa a funçao e ela chama de volta. outro ex é com requisiçao ajax.
+
+/////////
+
+Funçoes callback #2
+const notas = [7.7, 6.5, 5.2, 8.0, 3.6, 7.1, 9.0];
+
+// e se eu gerasse outro array com somente as notas abaixo de 7? vejamos primeiro normal e depois com callback
+
+//Sem Callback
+let notasBaixas = [];
+for(let i in notas)
+{
+    if(notas[i] < 7)
+    {
+        notasBaixas.push(notas[i]);
+    }
+}
+
+console.log(notasBaixas);
+
+// com Callback:
+
+const notasBaixas2 = notas.filter(function (nota){
+    return nota < 7;
+}); // filter é uma função que vai filtrar os elementos de um array em cima de um determinado critério e vai retornar true ou false. se a funçao retornar true, significa que ela deve ser chamada no array q esta sendo gerado. se retornar false, ela não vai ser adicionada no array q é a resposta dessa funçao. quando eu chamo 'filter', o resultado da funçao 'notas' vai ser outro array (notasBaixas). o array original "notas" não altera, mas o array 'notasBaixas' sim vai ser alterado. passei uma funçao/callback que o resultado vai ser verdadeiro ou falso, essa funçao recebe como parametro uma nota. 'return nota < 7' vai ser true ou false. se nota < 7, é true, o elemento constará no array final (notasBaixas), senão, não vai adicionar.
+
+// /\ note acima que chamei apenas um callback, uma funçao q sera pra cada um dos elementos
+
+
+console.log(notasBaixas2);
+
+// Com função arrow:
+const notasBaixas3 = notas.filter(nota => nota < 7); // passei uma callback pra esse filter, q recebe como parametro o elemento atual nota e retorna true or false.
+console.log(notasBaixas3);
+
+// /\ posso colocar acima em uma constante
+const notasMenorQue7 = nota => nota < 7;
+const notasBaixas3 = notas.filter(notasMenorQue7);
+console.log(notasBaixas3);
+
+/////////////////
+
+Callback #3:
+// Exemplo de call back no browser
+document.getElementsByTagName('body')[0].onclick = function(e) {
+    console.log('O evento ocorreu');
+}
+// document é a referência dentro do browser q é disponivel globalmente que aponta para sua página. getlementsbytagname acessa os elementos a partir de uma tag. vai retornar vários elementos. a tag que eu quero é o 'body'. e a resposta dessa função é um array. então, pra acessar um elemento especificamente tenho q passar um indice do array. como só tem um body 99% das vezes nas páginas, usamos o array de indice [0]. associado a esse elemento coloco o 'onclick' e vou atribuir ao onclick uma callback para que sempre q o usuario clicar no body. onclick recebe uma funçao, essa funçao recebe como parametro um evento (e).
+
+// ao clicar, a funçao foi registrada, ao clicar, o evento ocorreu. ao clicar, a callback será chamada. ao dar F5, ele não tá mais registrado, tem q registrar novamente (document[....])
+
+////////////
+
+Funções construtoras:
+function Carro(velocidadeMaxima = 200, delta = 5)
+{
+    // atributo privado
+    let velocidadeAtual = 0; // atributo que pertence apenas ao escopo da função Carro. quando eu instanciar um objeto a partir dessa funçao, nao tem como acessar diretamente velocidadeAtual pq é um atributo interno da minha função.
+
+    // metodo publico
+    this.acelerar = function() { // essa funçao é responsavel por acrescentar a velocidade atual q é uma velocidade q tá visivel apenas naão
+        if(velocidadeAtual + delta <= velocidadeMaxima)
+        {
+            velocidadeAtual += delta;
+        }
+        else{
+            velocidadeAtual = velocidadeMaxima;
+        }
+    }
+
+    // método público
+    this.getVelocidadeAtual = function() {
+        return velocidadeAtual;
+    }// método responsável por pegar a velocidade atual. eu poderia deixar 'velocidadeAtual' aberta, mas ai o usuário pegaria um valor maior q 
+    a velocidade maxima e voce nao teria controle dessa variavel. entao vc pode permitir acesso a variável através de uma funçaõ com getVelocidadeAtual e vc retorna o valor da velocidade atual q é um atributo privado (atributo privado cria-se com let, var ou const).  
+}
+
+const uno = new Carro(); // instanciando um objeto
+uno.acelerar();
+console.log(uno.getVelocidadeAtual());
+
+// se quiser que algo seja publico, pra ser visivel fora da funçao construtora, vc usa o 'this'.
+
+const ferrari = new Carro(350, 20);
+ferrari.acelerar();
+console.log(ferrari.getVelocidadeAtual());
+
+//////////////////////
+
+Tipos de declaração de função -
+
+// function declaration
+function soma (x,y) // a vantagem de usar esse tipo de declaraçao, é q posso chamar ela antes de ela ser declarada.
+{
+    return x + y;
+}
+
+// function expression
+const sub = function (x,y)
+{
+    return x - y;
+}
+
+// named function expression
+const mult = function mult(x,y){ // mais util somente para debugar
+    return x * y;
+}
+
+//////////
+
+Contexto léxico -
+// contexto no qual as coisas são declaradas dentro da linguagem
+
+const valor = 'Global';
+
+function minhaFuncao()
+{
+    console.log(valor);
+}
+
+function exec(){
+    const valor = 'Local';
+    minhaFuncao(); // ao chamar essa funçao aq, vai mostrar 'Global' ou 'Local'? Dentro do contexto lexico, vai mostrar 'Global', pq? a funçao carrega consigo o contexto lexico, ela vai procurar dentro do contexto lexico na qual foi definida, por isso mostra 'Global'
+}
+
+exec();
+
+///////////////////
+
+// Closure
+Closure é o escopo criado quando uma função é declarada.
+// Esse escopo permite a função acessar e manipular variáveis externas à função
+
+const x = 'Global';
+
+function fora() {
+    const x = 'Local';
+    function dentro() {
+        return x;
+    }
+    return dentro;
+}
+const minhaFuncao = fora();
+console.log(minhaFuncao()); // qual valor de 'x' q ela retorna? o valor de 'x' global ou o valor de 'x' local? por conta de uma funçao em javascript ser um closure, ele terá ciencia de onde foi definida e acessará a variavel 'x' local e nao a global.
+
+///////////
+
+Funções Factory - é uma função que retorna um objeto
+
+// Imaginemos
+
+const prod1 = {
+    nome: '...', // nome do produto
+    preco: 45
+}
+
+const prod2 = { // outro produto exatamente igual ao prod1
+    nome: '....',
+    preco: 1234
+}
+
+// se voce for fazendo esse processo muitas vezes, voce repete demais o conteudo de um determinado objeto no programa
+
+// Factory Simples:
+function criarPessoa(){
+    return{ // dentro da função to retornando um objeto
+        nome: 'Ana',
+        sobrenome: 'Silva'
+    }
+}
+
+// factory entao é uma funçao que sempre retorna um objeto, embora aqui nao tenha o operador 'new', o fato de estar criando um objeto a partir da notaçao literal de objeto ( { } ), voce ta sempre criando uma nova instancia de pessoa. pode simplesmente criar um objeto a partir da chamada da funçao. 
+
+console.log(criarPessoa()); // portanto, tenho aqui a criaçao de uma pessoa a partir de uma factory. por isso o nome 'factory', que ela tem a funçao de fabricar a instancia de um objeto
+
+////////////
+
+Factory #2 :
+
+function criarProduto(nomeProduto, precoProduto)
+{
+    return{
+        nomeProduto,
+        precoProduto,
+        desconto: 0.1
+    }
+}
+
+console.log(criarProduto('Notebook', 2199.49));
+console.log(criarProduto('iPad', 1199.49));
+
+// /\ funçao factory exemplo, so que com o desconto de 10% fixo como padrão. nao precisei coloquei nome:nomeProduto, pois é o nome que eu quis. 
+
+///////////
+
+Classe x Funçao Factory:
+class Pessoa {
+    constructor(nome) { // aqui tenho o construtor dessa classe para inicializar variaveis que porventura passemos na hora da construção
+        this.nome = nome; // assim que coloquei aqui this.nome , significa que essa variavel 'nome' passou a ser publica, entao vou poder ter acesso a ela sempre q eu quiser a partir da instancia dessa classe.
+    }
+
+    falar() {
+        console.log(`Meu nome é ${this.nome}`);
+    }
+}
+
+const p1 = new Pessoa('João'); // passei aqui string, q foi passada pro construtor
+p1.falar();
+
+// vai mostrar o esperado, meu nome é joão
+
+const pessoa = nome => {
+    return {
+        falar: () => console.log(`Meu nome é ${nome}`); // com Factory aqui, eu nao preciso usar o 'this', pq ele tem consciencia do contexto lexico no qual foi declarado.
+    }
+}
+
+const p2 = pessoa('João');
+p2.falar();
+
+///////////
+
+Transformar este codigo em uma função construtora:
+class Pessoa {
+    constructor(nome) { // aqui tenho o construtor dessa classe para inicializar variaveis que porventura passemos na hora da construção
+        this.nome = nome; // assim que coloquei aqui this.nome , significa que essa variavel 'nome' passou a ser publica, entao vou poder ter acesso a ela sempre q eu quiser a partir da instancia dessa classe.
+    }
+
+    falar() {
+        console.log(`Meu nome é ${this.nome}`);
+    }
+}
+
+---------
+
+// os parametros do construtor vao passar a ser parametro dessa funçao a ser criada. o que voce fez dentro do 'constructor', agora, vc faz dentro direto da sua funçao construtora
+
+function Pessoa(nome) {
+
+    this.nome = nome; 
+
+    this.falar = function() { // e para transformar essa funçao pra ficar diretamente no objeto, fiz assim 'this.falar = function()'
+        console.log(`Meu nome é ${this.nome}`);
+    }
+}
+
+const p1 = new Pessoa('João');
+p1.falar(); // aqui a instanciação é a mesma
+
+// entao posso criar objeto a partir de uma funçao construtora, de uma classe e criar objeto a partir de uma factory
+
+///////////
+
+IIFE - Função auto invocada, na declaraçao da funçao ja invoca a execuçao da função. ideal pra fugir do escopo global. tudo que voce criar na função será escopo local da função e não escopo global da função. evita manipular algo no escopo global. aqui, voce foge do escopo global, criando função autoinvocada.
+
+(function(){ // criei uma funçao anonima
+    console.log("Será executado na hora");
+    console.log("Foge do escopo mais abrangente!");
+})() // pra finalizar, no final, preciso chamar ele com os ()
+
+
+//////////
+
+Call & Apply -
+
+function getPreco(imposto = 0, moeda = 'R$')
+{
+    return `${moeda} ${this.preco * (1 - this.desc) * (1 + imposto)}`;
+}
+
+const produto = {
+    nome: 'notebook',
+    preco: 4589,
+    desc: 0.15,
+    getPreco // como ja tenho uma funçao com esse nome, ao criar um atributo assim com esse nome ele ja vai associar automaticamente a funçao
+}
+
+// se eu fizesse assim:
+// global.preco = 18;
+// global.desc = 2; 
+// funcionaria, pq teria definido globalmente
+console.log(getPreco()); // vai dar NaN pq simplesmente nao defini preco e desconto, a nao ser se eu fizesse o que fiz acima, declarando como 'global.preco = 18 e global.desc = 2'
+console.log(produto.getPreco()); // outra forma: agora funciona normalmente, pq chamei 'getpreco' a partir de um objeto
+
+// outra forma é a partir do call e apply:
+
+const carro = { preco: 49990, desc: 0.20}; // criei outro objeto
+// a partir desse objeto, vou chamar getPreco
+console.log(getPreco.call(carro)); // passei como contexto o objeto carro pro valor da execução
+console.log(getPreco.apply(carro)); 
+
+// qual a diferença de call e apply? é a chamada nos parametros.
+com call, eu passo diretamente eu passo os parametros cada um dos parametros que serao passado da funçao. o 1 parametro sempre é o contexto.
+ex:
+console.log(getPreco.call(carro, 0.17, '$'));
+
+// com apply, vou passar os parametros dentro de um array
+console.log(getPreco.apply(carro, [0.17, '$']));
+
+o contexto poderia ser 'global' tb, ai usaria o global que passamos lá em cima:
+console.log(getPreco.apply(global, [0.17, '$']));
+console.log(getPreco.call(global, 0.17, '$'));
+
+///////////////////
+
+OBJETOS OO-
+
+// Linguagem procedural
+processamento(valor1, valor2, valor3); // voce tem dado e manipula o dado. 
+
+aqui voce tem dados e dentro desses dados voce tem funçao
+objeto é a figura central. as figuras que geram objetos podem ser classes, funções, etc.
+
+objeto = {
+    valor1,
+    valor2,
+    valor3,
+    processamento(){
+
+    }
+}
+
+// na OO voce tem dados, e dentro dos dados voce tem as funções. e voce passa a invocar esses processamentos a partir do dado. o objeto funciona como capsula que agrpa comportamentos e atributos. objeto tem herança, etc.
+
+objeto.processamento();
+
+
+// Principios importantes:
+// 1. abstração - pegar objeto do mundo real e como traduzir esse objeto pra dentro do sistema.
+por ex: objeto: carro. carro tem atributos peso, largura, altura, velocidadeMax, velocidadeAtual, tem metodo de ligar, desligar, gerarSom, etc.
+mas por ex, se vc fosse funcionario do detran, nao faria sentido criar o método acelerar dentro da função de carro se tivesse q criar um sistema pro detran 
+
+// 2 encapsulamento - ter os detalhes de implementaçao escondidos e mostrar a interface escondida pra que possa interagir com o objeto.
+quando voce muda a implementaçao interna, nao necessariamente quem usa aquela implementaçao precisa se adaptar, só é necessario mudar a interface pra todo mundo se adaptar.
+
+alto acoplamento = muitos objetos que tem tudo deles dentro exposto, há muita dependencia entre eles.
+é mais importante se preocupar com a comunicaçao dos objetos do que com a implementação.
+
+// 3 herança (prototype) -> [...] É UM [...]
+voce herda atributos e comportamentos de uma herança pai.
+priorize a composiçao em vez de herança.
+
+// 4 polimorfismo -> multipla formas
+
+////////////
+
+
+// objeto é coleçao dinamica de pares chave/valor
+const produto = new Object // Object é uma funçao, instanciei um objeto aqui.
+produto.nome = 'Cadeira';
+produto['marca do produto'] = 'Genérica';
+produto.preco = 220;
+console.log(produto); // vai mostrar nome, marca e preço.
+
+
+// excluindo atributos de um objeto:
+delete produto.preco;
+delete produto['marca do produto'];
+
+// agora, ao dar console.log(produto), mostraria apenas 'nome'.
+
+const carro = { // esses valores podem ser outros objetos, array, etc. ali tem o valor proprietario sendo outro objeto, q proprietario tem outro objeto (endereço).
+    modelo = 'A4',
+    valor: 89000,
+    proprietario: {
+        nome: 'Raul',
+        idade: 56,
+        endereco: {
+            logradouro: 'Rua ABC',
+            numero: 123
+        }
+    },
+    condutores: [{
+        nome: 'Junior',
+        idade: 42
+    }, {
+        nome: 'Ana',
+        idade: 32
+    },
+], // temos aqui atributos que é um array, q tem conjunto de objetos
+calcularValorSeguro: function() {
+    // ...
+} // aqui tenho uma funçao dentro do objeto
+}
+
+carro.proprietario.endereco.numero = 1000; // posso acessar os atributos a partir da notação ponto
+carro['proprietario']['endereco']['logradouro'] = "Av. Paulista"; // posso acessar atributo tb a partir de colchetes
+console.log(carro);
+
+delete carro.condutores; // tudo q tiver dentro de condutores será excluindo
+delete carro.proprietario.endereco;
+delete carro.calcularValorSeguro; 
+
+///////////
+
+Criaçao de objetos -
+// usando notaçao literal
+const obj1 = {}
+console.log(obj1);
+
+// object em JS
+console.log(typeof Object, typeof new Object());
+ou
+const obj = new Object
+console.log(obj2);
+
+// Funções construtoras
+function Produto(nome, preco, desc){
+    this.nome = nome; // aqui eu quis tornar essa variável pública, ela nao ta encapsulada/escondida dentro do objeto, isto é, visivel para fora do objeto. aqui significa que ele pertence a instancia, pq to acessando com 'this'. quando eu criar uma nova instancia de produto, o nome que voce passou estará visivel nessa instancia que será criada
+    this.getPrecoComDesconto = () => {
+        return preco * (1 - desc);
+    } // aqui tenho um metodo que será público tbm. este metodo pertence a instancia que for criada tbm, estará visivel quando instanciar um objeto a partir deste método
+}
+
+const p1 = new Produto('Caneta', 7.99, 0.15);
+const p2 = new Produto('Notebook', 2998.99, 0.25);
+console.log(p1.getPrecoComDesconto(), p2.getPrecoComDesconto());
+
+// Função Factory
+function criarFuncionario(nome, salarioBase, faltas){
+    return {
+        nome,
+        salarioBase,
+        faltas,
+        getSalario(){ // vai calcular o salario baseado nas faltas que o funcionario ter
+            return (salarioBase / 30) * (30 - faltas);
+        }
+    }
+}
+
+const f1 = criarFuncionario('João', 7980, 4);
+const f2 = criarFuncionario('Maria', 11400, 1);
+console.log(f1.getSalario(), f2.getSalario());
+
+// Object.create é outra forma de criar objeto
+const filha = Object.create(null); // Quando null é passado como argumento para Object.create, isso significa que o novo objeto não terá nenhum prototype. Isso resulta em um objeto que não herda propriedades ou métodos de nenhum outro objeto.
+filha.nome = 'Ana';
+console.log(filha);
+
+// Criando objeto com JSON.parse
+const fromJSON = JSON.parse('{"info": "Sou um JSON"}'); // ele converteu essa string JSON que está em em aspas simples em uma objeto javascript. 
+console.log(fromJSON.info); // posso acessar como objeto. 
+
+//////////////
+
+Objetos Constantes - 
+const pessoa = { nome: João };
+pessoa.nome = 'Pedro';
+console.log(pessoa); // funciona normalmente, embora seja constante, a referencia é ao 'nome'
+
+// agora, pra eu não mexer mais em um Objeto, como eu faria?
+Object.freeze(pessoa); // quando dá 'Object.freeze', não poderá mais usar nada do Object, nem adicionar, nem mudar, nem remover, nem nada.
+pessoa.nome = 'Maria';
+pessoa.end = 'Rua ABC';
+delete pessoa.nome; // também não irá funcionar.
+console.log(pessoa.nome); // isso não irá gerar um erro, mas 'pessoa.nome' continuará sendo 'Pedro'. 
+console.log(pessoa); // não irá mostrar 'Rua ABC', pelo fato que voce deu freeze em 'pessoa'.
+
+// com o Object.freeze(pessoa), nada abaixo disso irá funcionar mais.
+// pra criar e nunca mais mexer, façamos:
+const pessoaConstante = Object.freeze({nome: 'João'});
+
+console.log(pessoaConstante); // mostra apenas 'nome:João', e nada mais vai alterar nisso
+
+///////////////////
+
+Métodos Getters e Setters-
+Metodo get - le o valor de uma variavel/atributo
+Método set - altera o valor de uma variável
+metodos getters e setters são valores que podem ser acessados
+
+_valor = 1; // usar _ antes do nome da variavel é uma convenção do javascript para dizer q o atributo é pretendido a ser privado
+
+const sequencia = {
+    _valor: 1,
+    get valor() { return this._valor++},
+    set valor(valor){
+        if(valor > this._valor)
+        {
+            this._valor = valor;
+        }
+    }
+}
+
+console.log(sequencia.valor, sequencia.valor); // embora eu esteja, teoricamente, acessando um atributo, ele ta, na vdd, acessando o metodo get e o metodo set. irá mostrar 1 e 2.
+sequencia.valor = 1000;
+console.log(sequencia.valor, sequencia.valor); // mostru 1000 e 1001, metodo get e metodo set
+sequencia.valor = 900;
+console.log(sequencia.valor, sequencia.valor); // vai mostrar 1002 e 1003, pois o valor q voce ta setando é menor que o valor que já tem no get (1001 agora, pq era 1000 q setei e +1 pq executei), então ele vai simplesmente ignorar
+
+//////////
+
+Funções importantes de Objeto
+const pessoa = {
+    nome: 'Rebeca',
+    idade: 2,
+    peso: 13
+}
+
+console.log(Object.keys(pessoa)); // object.keys pega todas as chaves de um objeto, no caso, 'pessoa'. vai mostrar: 'nome idade, peso'.
+console.log(Object.values(pessoa)); // peguei uma lista dos valores de 'pessoa', no caso, mostra 'Rebeca, 2, 13'
+console.log(Object.entries(pessoa)); // vai me dar um array com todos os subarrays que vai ter a chave e o valor, no caso, me retorna: [ ['nome', 'Rebeca'], ['idade', 2], ['peso', 13] ]
+/\ // posso até percorrer através de um array:
+
+Object.entries(pessoa).forEach(e => { // a partir do foreach, vou percorrer os elementos (e) que foram gerados a partir de Object.entries
+    console.log(`${e[0]}: ${e[1]}`)
+})
+
+// usando destructuring, para ficar mais claro:
+Object.entries(pessoa).forEach(([chave, valor]) => {
+    console.log(`${chave}, ${valor}`); // agora fica mais claro saber o que é chave e o que é valor
+})
+
+Object.defineProperty // aqui, voce define uma propriedade de um objeto. pode definir dinamicamente, como fizemos acima com a notaçao literal { ... }, notaçao ponto, etc. mas pra q funçao entao? pq posso definir algumas caracteristicas pra uma propriedade (Atributo), como por ex essa propriedade pode ou não ser alterada, ficará ou não visível, etc.
+ex:
+Object.defineProperty(pessoa, 'dataNascimento', {
+    enumerable: true,
+    writable: false,
+    value: '01/01/2019'
+})
+
+pessoa.dataNascimento = '01/01/2017';
+console.log(pessoa.dataNascimento);
+console.log(Object.keys(pessoa)); // verá que vai mostrar 'nome, idade, peso, dataNascimento'. se colocar 'enumerable: false', ele não vai mostrar dataNascimento.
+
+// Object.assign
+const dest = { a: 1}
+const o1 = {b: 2}
+const o2 = {c: 3, a: 4}
+const obj = Object.assign(dest, o1, o2); // o object.assign pega o objeto de destino, que é o objeto que vai receber os atributos, no caso, 'dest', e todos os parametros que voce passou depois de 'dest', vai concatenar com os objetos que voce passou no primeiro parametro (no caso, o1 e o2 vão concatenar com os objetos que ja tem no dest. no caso, dentro de 'dest' vai ter 'b: 2, c:3 e a:4', 'a' já exisita como valor 1, mas foi sobrescrito por 4, vai tudo concatenar com o 'obj'). se eu der Object.freeze(obj) embaixo, nada mais nele poderá ser mudado.
+
+/////////////
+
+Herança é um principio da OO que faz com que voce receba atributos e comportamentos do pai, e 'reuse' códigos. em herança vc só tem um ancestral, em composiçao vc pode ser composto de multiplos objetos, por isso prefira composição a herança.
+em javascript, a herança é uma herança baseada em prototipos.
+prototipo é tipo: vc tem um objeto com atributo 'nome'. voce tenta acessar o atributo nome e ele vai pegar o atributo do proprio objeto. se voce ta tentando pegar um atributo cor do cabelo, e esse objeto que ta tentando procurar nao tem cor do cabelo, o objeto tem referencia do seu Pai, que se vc nao achou uma propriedade em seu objeto, procura o mesmo atributo no seu prototipo, caso tenha, procurando no pai do meu pai, e assim indo, se não achar, dirá q é undefined, se achar, ele devolve o valor.
+vejamos, temos um objeto chamado ferrari, e tem um atributo chamado [[Prototype]], por padrão ele aponta para Object.prototype. nem sempre vc aponta pra Object.prototype. o atributo prototype so ta disponivel dentro de uma função.
+OBS:
+[[Prototype]] != prototype (atributo)
+
+const ferrariNova = {
+    modelo: 'F40',
+    velMax: 400
+}
+
+const volvo = {
+    modelo: 'V40',
+    velMax: 320
+}
+
+console.log(ferrariNova.__proto__); // com isso, consigo acessar o prototipo do meu objeto ferrariNova, e se eu tentar acessar um atributo dentro de ferrari, e nao achar, ele vai procurar o mesmo atributo dentro do meu prototipo. ao executar, dirá q é um objeto vazio, {}, mas existe, ta presente.
+
+console.log(ferrariNova.__proto__ === Object.prototype); // verá q vai dar true, pois o [[Prototype]] aponta, por padrao, para o Object.prototype.
+
+[[Prototype]], aqui, é o __proto__
+
+console.log(volvo.__proto__ === Object.prototype); // qq outro objeto q vc crie, com isso, ira apontar pra Object.prototype
+
+console.log(Object.prototype.__proto__ === null); // nao tem ninguem mais acima de prototype, portanto é nulo
+
+// isso não vale se vc estiver criando sua funçao construtora
+
+function MeuObjeto() {}
+    console.log(typeof Object, typeof MeuObjeto);
+    console.log(Object.prototype, MeuObjeto.prototype);
+
+
+////////
+
+Cadeia de protótipos (prototype chain)
+
+const avo = { attr1: 'A' }
+const pai = { __proto__: avo, attr2: 'B'}; // pra eu referenciar que o pai tem o prototipo 'avo', eu tenho q atribuir na propriedade __proto__: avo.
+const filho = {__proto__: pai, attr3: 'C'};
+
+// o avo tem o atributo1, q é 'A', o pai tem attr2 q é o B, e o filho tem attr3 q é 'C'. o filho tem como prototipo o pai, o pai tem como prototipo o avo, e o avo tem como prototipo o Object.prototype.
+console.log(filho.attr1); // vai mostrar 'A'
+
+Agora, se eu der, acima do avo:
+Object.prototype.attr0 = 'Z'; // não é recomendado
+console.log(filho.attr0, filho.attr1, filho.attr2, filho.attr3); // vai mostrar 'Z', pq ele vai procurar no pai, depois no avo, nao achou nenhum attr0, entao agr vai procurar no prototype, e achou, mas este caso não é muito recomendado.
+
+const carro = {
+    velAtual: 0,
+    velMax: 200,
+    acelerarMais(delta){
+        if(this.velAtual + delta <= this.velMax) {
+            this.velAtual += delta;
+        }
+        else {
+            this.velAtual = this.velMax;
+        }
+    },
+    status() {
+        return `${this.velAtual}Km/h de ${this.velMax}Km/h`;
+    }
+}
+
+const ferrari = {
+    modelo: 'F40',
+    velMax: 324 // no momento que defino a velMax, esse atributo vai sombrear o atributo original de 'carro', então vou ter aqui o shadowing, que é o 'sombreamento', onde temos uma variavel local e essa variavel pode sombrear variavel de escopo mais abrangente
+}
+
+const volvo = {
+    modelo: 'V40',
+    status() {
+        // sombreei a função 'status', vou usar ela com uma funçao a mais. assim como uso 'this' pra referenciar ao objeto atual, eu uso 'super' pra referenciar o meu prototipo. 
+        return `${this.modelo}: ${super.status()}`; // estou sombreando a minha funçao status através do objeto 'volvo', por enquanto ela é uma funçao independente. com o 'super' eu uso a função do meu prototipo, isto é, status do prototipo, no caso, carro.
+    }
+}
+
+Object.setPrototypeOf(ferrari, carro); // estabeleci uma relação entre ferrari e carro. isto é, ferrari tem 'carro' como seu prototipo. 'setPrototypeOf' é um método especificado pela linguagem, onde tiver JS, ele funcionará. primeiro tenho o objeto (ferrari), depois é o prototipo daquele objeto (carro).
+
+Object.setPrototypeOf(volvo, carro);
+
+console.log(ferrari);
+console.log(volvo);
+
+volvo.acelerarMais(100);
+console.log(volvo.status());
+
+ferrari.acelerarMais(300);
+console.log(ferrari.status()); // no caso, vai chamar o proprio metodo status de 'carro', ja que nao sobrescrevi em 'ferrari'
+
+///////////
+
+Herança #3-
+const pai = {
+    nome: 'Pedro',
+    corCabelo: 'Preto'
+}
+
+const filha1 = Object.create(pai); // vai criar o objeto filha1 tendo como prototipo 'pai'. define como prototipo o objeto que voce passou como parametro. eu passo o objeto que eu quero que seja o prototipo do objeto que está sendo criado a partir do método Object.create
+filha1.nome = 'Ana'; // já alterei o nome da filha. ja tenho acesso a 'nome' e 'corcabelo'. aqui ja tenho objeto normal, ele aponta pro objeto que voce usou como prototipo no 'Object.create', no caso, 'pai'.
+console.log(filha1.corCabelo); // vai mostrar 'preto'
+
+// ja posso ate criar outros atributos, dizer se o atributo sera enumerado, sera escrito, etc. \/
+const filha2 = Object.create(pai, { 
+    nome: { value: 'Bia', writable: false, enumerable: true} // não poderá ser escrito ('nome' será 'bia' e não poderá ser mudado) e poderá ser listado (enumerable), então pode ajudar se for usar object.key ou foreach 
+}); // o 2º parametro desse objeto será todos os atributos que eu quero adicionar
+
+console.log(filha2.nome);
+
+for(let key in filha2) {
+    filha2.hasOwnProperty(key) ?
+        console.log(key) : console.log(`Por herança: ${key}`);
+} // for in aqui é a possibilidade de verificar se uma determinada propriedade pertence ou não ao objeto que voce esta percorrendo no momento. no caso, aqui, hasownProperty se retornar true significa que o atributo pertence ao proprio objeto, senão significa que vc recebeu o atributo a partir da cadeia de prototipos, isto é, a partir da cadeia de herança.
+
+////////////////
+
+function MeuObjeto() {}
+console.log(MeuObjeto.prototype);
+
+const obj1 = new MeuObjeto
+const obj2 = new MeuObjeto
+console.log(obj1.__proto__ === obj2.__proto__); // verá que vai dar true, ou seja, os objetos apontam para o mesmo objeto, mesmo padrão
+// quando voce cria um objeto a partir de uma função construtora usando 'new', o prototipo deste objeto automaticamente aponta para a função que voce criou . prototype
+
+MeuObjeto.prototype.nome = 'Anônimo';
+MeuObjeto.prototype.falar = function () {
+    console.log(`Bom dia! Meu nome é ${this.nome}!`);
+}
+
+__proto__ é como o objeto se referencia ao seu protótipo.
+já que 'obj1/obj2' nao sobrescreveu o atributo de 'nome', ele vai pegar o atributo 'nome' do protótipo (no this.nome)
+
+obj1.falar();
+obj2.nome = 'Rafael';
+obj2.falar();
+
+const obj3 = {};
+obj3.__proto__ = MeuObjeto.prototype; // estou mudando a referencia do meu obj3 pra sair de obj3.__proto__ pra ir pra MeuObjeto.prototype.
+obj3.nome = 'Obj3';
+obj3.falar();
+
+// Veja:
+console.log((new MeuObjeto).__proto__ === MeuObjeto.prototype); // (new MeuObjeto) é uma instancia da funçao, ele tem __proto__ pq o resultado de new MeuObjeto é um objeto, e o __proto__ é exatamente igual a MeuObjeto.prototype, pq quando o objeto é instanciado a partir dessa funçao, eles são iguais.
+console.log(MeuObjeto.__proto__ === Function.prototype); // a função também tem o __proto__
+console.log(Function.prototype.__proto__ === Object.prototype); // isso é mais curiosidade, mas o prototipo do prototipo de uma função, é igual e identico ao prototipo de um objeto.
+
+////////////
+
+Herança 5-
+---------------> toda função tem um atributo chamado .prototype
+
+String.prototype.reverse = function() {
+    return this.split('').reverse().join(''); // vou quebrar a string em cada uma das letras, e vou gerar um array com cada uma das letras e também vai incluir espaços em branco. o array tbm tem a função 'reverse', ou seja, vai reverter os elementos do array, e no final usei 'join' para juntar todos os os elementos na string novamente.
+}
+
+console.log('Escola Cod3r'.reverse());
+
+Array.prototype.first = function () {
+    return this[0]
+}
+
+console.log([1,2,3,4,5].first()); // me mostra '1'
+console.log(['a', 'b', 'c'].first()); // me mostra 'a'
+
+String.prototype.toString = function() { // toString voce esta sobrescrevendo o comportamento
+    return 'Lascou tudo';
+} 
+
+console.log('Escola Cod3r'.reverse()); // dá erro, mas o chatgpt corrige.
+
+/////////////
+
+function Aula(nome, videoID) {
+    this.nome = nome;
+    this.videoID = videoID;
+}
+
+const aula1 = new Aula('Bem-Vindo', 123);
+const aula2 = new Aula('Até breve', 456);
+console.log(aula1, aula2);
+
+/\ // quando voce usa o 'new', não tem so o fato de criar um objeto feito, mas tambem que o prototipo do objeto criado aponta para a função, no caso, aponta para Aula (Aula.prototype).
+
+//simulando o new
+function novo(f, ...params) { // ...params é um array que representa a lista de parametros que quero aplicar na função f
+    const obj = {}
+    obj.__proto__ = f.prototype
+    f.apply(obj, params); // passei como objeto de contexto o obj, e passando como parametros no que recebeu como ...params
+    return obj;
+}
+
+const aula3 = novo(Aula,'Bem-Vindo', 123);
+const aula4 = novo(Aula, 'Até Breve', 456);
+console.log(aula3, aula4); 
+
+/////////////
+
+Temos o Object.preventExtensions -> posso até excluir atributos, mas nao posso adicionar novos atributos no Objeto, pois voce ta prevenindo a capacidade de adicionar novos atributos.
+const produto = Object.preventExtensions({ // me retorna um 'produto' que não pode ser extendido.
+    nome: 'Qualquer', preco: 1.99, tag: 'promoção'
+})
+
+console.log('Extensível:', Object.isExtensible(produto));
+produto.nome = 'Borracha'; // alterei um atributo que já existe, isso não tem muito problema não.
+produto.descricao = 'Borracha escolar branca'; // adicionei um atributo, isso não funciona, não pode adicionar novas chaves e valores.
+delete produto.tag; // removi um atributo, tb não tem problema.
+console.log(produto); // só mostra 'nome' e 'preco'.
+
+// vendo agora o Object.seal
+const pessoa = { nome: 'Juliana', idade: 35}
+Object.seal(pessoa);
+
+/\ // ele sela o objeto, isto é, vc não consegue adicionar novos atributos, nem excluir atributos do objeto, mas consegue alterar os atributos já existentes.
+console.log('Selado: ', Object.isSealed(pessoa));
+pessoa.sobrenome = 'Silva';
+delete pessoa.nome;
+pessoa.idade = 29;
+console.log(pessoa); // vai mostrar nome e idade normal, não adiciona nem remove, apenas altera os atributos existentes.
+
+// Object.freeze = selado + valores constantes. não consegue adicionar valores, nem excluir, nem modificar dados das variaveis do objeto, é completamente constante. writable = false.
+
+////////////////
+
+JSON vs Objeto
+JSON, na teoria, era pra ser objeto, mas na vdd é um formato textual.
+JSON é um formato de dados, para interoperabilidade entre sistemas, que é voce ter um formato textual generico que nao carrega consigo nada especifico de um sistema. Consegue ler JSON em qualquer linguagem.
+
+const obj = { a: 1, b:2, c: 3, soma() { return a + b + c } }
+console.log(JSON.stringify(obj)); // serializou as propriedades 'a,b,c', mas no caso, não serializou a função, pois funções não são serializáveis em JSON. stringify é um metodo em javascript que converte um objeto JavaScript em uma string JSON.
+
+console.log(JSON.parse("{a: 1, b: 2, c: 3}"));
+console.log(JSON.parse("{ 'a': 1, 'b': 2, 'c': 3}")); // não são formatos válidos de JSON, pois todos os atributos no formato JSON, o nome do atributo deve ser delimitado por aspas duplas. 
+pra corrigir isso, veja abaixo:
+
+
+console.log(JSON.parse('{ "a": 1, "b": 2, "c": 3 }')); // agora sim, é um objeto gerado a partir de um texto respeitando o formato JSON. o valor numerico nao fica em aspas duplas, apenas se fosse string.
+outro ex:
+
+console.log(JSON.parse('{ "a": 1.7, "b": "string", "c": true, "d": {}, "e": [] }')); // coloquei objeto dentro do json, array de elementos, mas so lembre-se q para representar string em json é com aspas duplas. e todos os atributos tem que ser com aspas duplas.
+
+//////////////
+
+Classe #1
+class Lancamento {
+    constructor(nome = 'Genérico', valor = 0) { // é a forma que a funçao tem que por padrão é chamada no momento que essa classe for instanciada com o operador new
+        this.nome = nome; // estou dizendo que estou adicionando ao objeto que está sendo instanciado o atributo 'nome' que é o que eu recebi como parametro.
+        this.valor = valor;
+    }
+}
+
+class CicloFinanceiro {
+    constructor(mes, ano){
+        this.mes = mes;
+        this.ano = ano;
+        this.lancamentos = [];
+    }
+    addLancamentos(...lancamentos) {
+        lancamentos.forEach(l => this.lancamentos.push(l)) // vou pegar cada elemento e dar um push no array que pertence ao objeto.
+    }
+    sumario () {
+        let valorConsolidado = 0;
+        this.lancamentos.forEach(l => {
+            valorConsolidado += l.valor
+        })
+        return valorConsolidado;
+    }
+}
+
+const salario = new Lancamento('Salario', 45000);
+const contaDeLuz = new Lancamento('Luz', -220);
+const contas = new CicloFinanceiro(6, 2018);
+contas.addLancamentos(salario, contaDeLuz);
+console.log(contas.sumario());
+
+
+//////////////////
+
+Classe #2 - 
+
+class Avo {
+    constructor (sobrenome) {
+        this.sobrenome = sobrenome;        
+    }
+}
+
+class Pai extends Avo {
+    constructor(sobrenome, profissao = 'Professor') {
+        super(sobrenome); // é uma forma de chamar o construtor de avo pra que sete o sobrenome.
+    }
+}
+
+class Filho extends Pai {
+    constructor() { // passei nenhum parametro
+        super('Silva'); // vai chamar o construtor do pai
+    }
+}
+
+const filho = new Filho();
+console.log(filho);
+
+/////////////////////////
+
+Array geral -
+
+No JS não existe array nativo, na verdade o array é um objeto que organiza seus dados a partir de um indice. temos chave valor. se vc der typeOf Array, vai mostrar function. a boa prática diz que não é bom ter mistura de tipo de dados em um array (boolean, int, string, etc), trabalhe com dados homogeneas.
+
+aprovados = ['Bia', 'Carlos', 'Ana'];
+console.log(aprovados[0]); // acessei o elemento Bia.
+
+se eu coloco:
+aprovados.sort();
+console.log(aprovados);
+
+// se eu ponho:
+delete aprovados[1]; // vai apagar apenas o de indice 1
+
+tenho a função splice, ela serve pra adicionar elementos em um indice, remover elementos e adicionar e remover ao mesmo tempo:
+aprovados.splice(1, 1); // o primeiro parametro é o indice que voce quer trabalhar, no caso quero trabalhar com indice do elemento 'Carlos' e tbm na altura do elemento do 'Carlos', vou excluir um elemento, no caso vou excluir o 'Carlos'.
+se fosse: 
+
+aprovados.splice(1, 2); // iria excluir 2 elementos a partir do Carlos, no caso, seria o Carlos e a Ana.
+
+pra adicionar elemento:
+aprovados.splice(1, 2, 'Elemento1', 'Elemento2');
+console.log(aprovados); // iria mostrar [ 'Bia', 'Elemento1', 'Elemento2' ]
+
+se fosse:
+aprovados.splice(1, 0, 'Elemento1', 'Elemento2'); // vai remover nenhum e vai adicionar os 2 elementos a partir do indice 1
+console.log(aprovados); // ou seja, vai mostrar [ 'Bia', 'Elemento1', 'Elemento2', 'Carlos', 'Ana' ]
+
+/////////////
+
+Array métodos importantes-
+const pilotos = ['Vettel', 'Alonso', 'Raikkonen', 'Massa'];
+pilotos.pop(); // esse método remove o ultimo elemento do array, no caso, vai remover 'Massa'.
+
+pilotos.shift(); // o 'shift' tira elemento da primeira posição do array.
+console.log(pilotos); // vai mostrar sem o 'vettel', já que removemos.
+
+pilotos.unshift('Hamilton'); // o método 'unshift' adiciona um elemento na primeira posição do array.
+console.log(pilotos); // vai mostrar o array com 'Hamilton'
+
+pilotos.splice(1, 0, 'Verstappen', 'Bottas'); // não vai remover nenhum e vai adicionar 'vestappen' e 'bottas' a partir do indice 1.
+
+pilotos.splice(3, 1); // a partir do indice 3 vai remover apenas 1 elemento, isto é, remover o elemento de indice 3.
+
+const algunsPilotos1 = pilotos.slice(2); // esse método retorna um novo array. no caso aqui, vai gerar um novo array a partir do indice 2. ou seja, a partir do indice 2, vai pegar todos os outros elementos e gerar um novo array com eles.
+console.log(algunsPilotos1);
+
+// o slice é voce pegar uma parte do array, um pedaço. 
+
+const algunsPilotos2 = pilotos.slice(1, 4); // pegando do indice 1 até o indice 4, mas o indice 4 não vai entrar, o indice 4 não conta, mas o indice 1 conta na geração do novo array.
+console.log(algunsPilotos2);
+
+//////////////
+
+Simulando Array com Objeto - 
+
+const quaseArray = { 0: 'Rafael', 1: 'Ana', 2: 'Bia'};
+console.log(quaseArray); // veremos que de fato ele é um objeto e não um array.
+
+// vou criar um método ToString dentro desse objeto quaseArray, mas será um objeto não listado, usaremos o ToString pra simular a impressão no console como se fosse um array.
+
+const quaseArray = { 0: 'Rafael', 1: 'Ana', 2: 'Bia'};
+console.log(quaseArray); 
+Object.defineProperty(quaseArray, 'toString', { // o toString é uma função que vai retonrar object.values. 'tostring' é o nome da propriedade que esta sendo definida ou modificada.
+    value: function() { return Object.values(this)},
+    enumerable: false
+})
+
+console.log(quaseArray[0])
+
+const meuArray = ['Rafael', 'Ana', 'Bia'];
+console.log(quaseArray.toString(), meuArray);
+
+////////////////
+
+Foreach - 
+const aprovados = ['Agatha', 'Aldo', 'Daniel', 'Raquel'];
+
+// percorrendo o array aprovados com forEach e dentro dos () passando um callback, passo uma funçao, e esse callback será passada a cada vez que eu fizer uma iteração no array, isto é, para cada elemento percorrido no array vai chamar o callback passando o proprio elemento e o indice do elemento. tem 2 parametros, o 1o parametro é o proprio elemento que to percorrendo e o 2o elemento vai ser o índice do elemento que está sendo executado no momento.
+
+aprovados.forEach(function(nome, indice) {
+    console.log(`${indice+1} : ${nome}`);
+});
+
+imprimindo no console só o nome:
+aprovados.forEach(nome => console.log(nome)); // vai mostrar cada um dos nomes de array de aprovados. aqui trabalhando com arrow function.
+
+const exibirAprovados = aprovado => console.log(aprovado);
+aprovados.forEach(exibirAprovados);
+
+temos um terceiro parametro no foreach, podendo ser ate um array.
+aprovados.forEach(function(nome, indice, array) {
+    console.log(`${indice+1} : ${nome}`);
+    console.log(x);
+});
+
+// os indices do foreach, o 2o é sempre o indice, o terceiro é sempre o array completo. o primeiro é a função a ser passada.
+
+// basicamente foreach: para cada elemento de um array, iremos passar uma função.
+
+////////////
+
+Foreach #02 -
+
+Array.prototype.forEach2 = function(callback) {
+    for(let i=0; i < this.length; i++){ // this.length pra acessar uma instancia de Array
+        callback(this[i], i, this); // passando o elemento do array, o indice do array, e o array completo
+    }
+}
+
+const aprovados = ['Agatha', 'Aldo', 'Daniel', 'Raquel'];
+
+aprovados.forEach2(function(nome, indice) { // Vamos ter que criar um método foreach2 pra poder fazer o exemplo funcionar.
+    console.log(`${indice+1} : ${nome}`);
+})
+
+/////////////////
+
+Função MAP -
+Associado ao MAP, dentro dele, existe um laço. O MAP serve pra fazer uma transformação do array. A ideia é mapear um array para outro array de mesmo tamanho, porém com os dados transformados. Por ex, você tem um array com 3 elementos, numero 1, 2 e 3. Vc quer transformar esse array de 3 elementos em outro array de 3 elementos no qual cada um dos elementos seja o dobro do array original. Então vc vai usar um map para fazer isso. Vc vai percorrer cada um dos elementos e o resultado final dessa transformação usando map é outro array do mesmo tamanho com os dados transformados. Vc pode ter um map que pega um objeto e transforma em numero, vc pega um objeto e transforma em string, pegar um array com varios JSONs e trnasformar em array de objetos, etc. O Map serve pra transformar um array em outro. 
+A regra: se o array original tem 6 elementos, o resultado do map vai gerar um array de 6 elementos porém com os dados transformados. Então o map serve para mapear os elementos de um array para o outro porém com o array original tem um tamanho X e o array transformado vai ter o mesmo tamanho X.
+
+const nums = [1,2,3,4,5];
+
+// O Map é um FOR com Propósito. Se usar o foreach ele vai dar os elementos do jeito que é no array. No caso do MAP, ele tem internamente um For, mas além de ter o For ele vai fazer uma transformação em cada um dos elementos de um array para outro array de mesmo tamanho. Vou armazenar o array resultante em uma variavel chamada resultado. A função map pode receber 3 parametros, que é o proprio valor atual, o indice e o array completo. Por enquanto, abaixo, vamos fazer uma funçao passando somente o elemento atual.
+
+let resultado = nums.map(function(e) { // passando um callback/funçao pro map. aqui é a funçao passando somente o elemento atual.
+    return e * 2
+}); // dentro do map passei a funçao que eu quero usar pra transformar cada um dos elementos. o resultado dessa função vai retornar um dos elementos q vai compor o array final q armazenei na variavel 'resultado'.
+
+console.log(resultado);
+
+// Entenda que o Map não transforma o array atual, ele gera um novo array, então ele não causa modificação no array atual. o método q vc passa pro Map tem que ter um retorno (return) pra que ele possa transformar em outra coisa.
+
+const soma10 = e => e + 10; // aq tenho uma funçao soma10 que recebe um elemento e 'e' e transforma esse elemento em nele + 10.
+const triplo = e => e * 3;
+const paraDinheiro = e => `R$ ${parseFloat(e).toFixed(2).replace('.',',')}`
+
+resultado = nums.map(soma10).map(triplo).map(paraDinheiro); // se eu trocar a ordem, o resultado será diferente, pois fará os calculos diferentes, a ordem dos maps importa. 
+console.log(resultado);
+
+//////////////
+
+Map #02
+Um desafio:
+
+const carrinho = [
+    '{"nome", "Borracha", "preco": 3.45}', // aq é string JSON, onde cada atributo é delimitado por aspas duplas, e qd for string tbm delimitado por aspas duplas.
+    '{"nome":"Caderno", "preco": 13.90}',
+    '{"nome":"Kit de Lápis", "preco": 41.22}',
+    '{"nome": "Caneta", "preco": 7.50}'
+]
+
+// Retornar um array apenas com os preços desse array acima.
+
+Feito por mim:
+const arrayCarrinho = carrinho.map(item=>JSON.parse(item).preco);
+console.log(arrayCarrinho);
+
+// Do Leitão:
+Primeiro passo é fazer um JSON.parse pra transformar as strings em objetos.
+
+const paraObjeto = json => JSON.parse(json); // Converte um texto em objeto.
+const apenasPreco = produto => produto.preco;
+
+const resultado = carrinho.map(paraObjeto).map(apenasPreco); // map encadeado.
+console.log(resultado);
+
+/\ Basicamente: tenho a função paraObjeto em que ela tem um parametro json e transforma o texto 'json' em objeto.
+Tenho tbm a função 'apenasPreco' que recebe um parametro produto, e retorno o preco de 'produto'.
+
+Aí crio uma constante resultado que recebe: faz uma iteração no array 'carrinho' através de map, e a cada elemento do array 'carrinho' vai executar a função 'paraObjeto', pegando um array de objeto. E em cada iteração que fizer, vai pegar apenas o preco do elemento, passando a função apenasPreco.
+Imprimo 'resultado'.
+
+se você colocasse: const resultado = carrinho.map(paraObjeto); ===> iria mostrar o array de objeto.
+
+////////////
+
+Map #03 -
+É criando map2...
+
+
+/////////
+
+Filter #01 -
+Outra forma de percorrer um array com mais propósito... o map é interessante pra um proposito de vc tem um array e quer transformar em outro. uma outra forma interessante é o filter, que serve para filtrar um array, pra você ter um subarray, uma quantidade de elementos menores baseado em algum criterio de filtro. ex, vc quer todos os alunos com nota maior que 7. ou todos os produtos marcar como 'fragil'. clientes em debito com a empresa.
+
+const produtos = [
+    {nome: 'Notebook', preco: 2499, fragil: true},
+    {nome: 'iPad Pro', preco: 4199, fragil: true},
+    {nome: 'Copo de Vidro', preco: 12.99, fragil: true}, 
+    {nome: 'Copo de Plástico', preco: 18.99, fragil: false}
+]
+
+console.log(produtos.filter(function(p) { // no filter vou passar minha função callback que recebe um parâmetro 'p' que recebe cada produto da iteração. 'p' é cada um dos elementos do array, isto é, 'p' é cada um dos produtos do array. na callback, o filter recebe 3 parametros: o elemento que está atualmente sendo processado no array, index (indice do elemento atual que esta sendo processado no array) e o array inteiro. diferente do 'map', onde o array transformado tem que ter a mesma quantidade de elementos que o array original, no 'filter' normalmente o array final tem menos elementos, ou é de mesmo tamanho ou de elementos a menos.
+
+    return false; // se eu fizer isso, significa que para cada produto/elemento 'p' que eu receber, ele não vai estar presente no array final, pq coloquei return false, que vai ser retornado pelo método 'filter'. ou seja, vai mostrar [], isto é, vazio. se eu retornar 'true', significa que vou ter todos os elementos q eu passei, isto é, para cada elemento que eu recebi eu filtrei 'true'.
+
+}))
+
+posso aplicar algum tipo de critério:
+console.log(produtos.filter(function(p) {
+    return p.preco > 2500;
+})); // só vai mostrar o de iPad Pro.
+
+// no map o resultado era o elemento retornado, e no filter é true ou false.
+
+// ----> Criar 2 funções para retornar apenas os produtos frágeis e os produtos que têm preço maior que 500, esses produtos vão estar na minha lista final. 1 função diz se o produto é caro e outra pra dizer se é fragil. e devemos usar o filter encadeado (igual fizemos antes com o map encadeado).
+
+const produtos = [
+    {nome: 'Notebook', preco: 2499, fragil: true},
+    {nome: 'iPad Pro', preco: 4199, fragil: true},
+    {nome: 'Copo de Vidro', preco: 12.99, fragil: true}, 
+    {nome: 'Copo de Plástico', preco: 18.99, fragil: false}
+]
+
+// Fiz assim:
+const resultado = produtos.filter(function(p) { return p.fragil == true}).filter(function(e) { return e.preco > 500});
+console.log(resultado);
+
+// Leitão fez:
+const caro = produto => produto.preco >= 500;
+const fragil = produto => produto.fragil; // subentendido q é true
+
+const resultado = produtos.filter(caro).filter(fragil);
+console.log(resultado);
+
+/////////////////////
+
+Filter #02 -
+Fazendo o filter2...
+
+///////////
+
+Reduce #01 -
+Outra forma de percorrer um array com mais propósito ainda. É uma função que serve para transformar um array em um outro array ou um array em outro numero ou um array em string, enfim, você vai definir o critério. Fato é que voce vai ter um parametro que será acumulado de chamada em chamada que vai sendo passado. O resultado de uma função reduce é sempre passado pra próxima iteração e você tem o elemento atual e no primeiro parametro vc tem o acumulador, que é passado como resposta da função anterior pra próxima. O primeiro reduce recebe os 2 primeiros elementos de um array, o elemento de indice 0 que em teoria seria o 'acumulador', e o elemento de indice 1 que é o elemento atual. Você faz algo com esses 2 elementos, e o resultado dessa função é passado pra proxima e o elemento atual faz algo e o resultado vai pra prox iteração e assim vai.
+
+const alunos = [
+    {nome: 'João', nota: 7.3, bolsista: false},
+    {nome: 'Maria', nota: 9.2, bolsista: true},
+    {nome: 'Pedro', nota: 9.8, bolsista: false},
+    {nome: 'Ana', nota: 8.7, bolsista: true}
+]
+
+console.log(alunos.map(a => a.nota)); // aq eu tenho todas as notas.
+const resultadoNew = alunos.map(a=>a.nota).reduce(function(acumulador, atual) {
+    console.log(acumulador, atual);
+    return acumulador + atual;
+}, 10);
+console.log(resultado);
+
+/\ vai me retornar, as somas, o seguinte: o acumulador é o valor inicial/valor da callback anterior, ele ta somando com o valor atual do elemento. o '10' ali, é depois da funçao, como parametro do metodo 'reduce', ele é o valor inicial, com que valor o reduce vai começar.
+
+
+/////////////////
+
+Reduce #02:
+const alunos = [
+    {nome: 'João', nota: 7.3, bolsista: false},
+    {nome: 'Maria', nota: 9.2, bolsista: true},
+    {nome: 'Pedro', nota: 9.8, bolsista: false},
+    {nome: 'Ana', nota: 8.7, bolsista: true}
+]
+// Criar função reduce que vai percorrer a lista acima e dizer se todos os alunos da lista são bolsistas ou não.
+
+// Criar função reduce q tb vai percorrer a lista e dizer se algum aluno é bolsista.
+
+-----------> Antes do reduce, geralmente faça-se o map. 
+1º desafio:
+const todosBolsistas = (resultado, bolsista) => resultado && bolsista; // todosBolsistas recebem uma função que vai ter o 'resultado', que seria o acumulador da callback anterior e o atributo 'bolsista', que é V ou F. os dois precisam ser verdadeiro. Essa função está verificando se todos os elementos do array são bolsistas. Ela retorna true se o resultado acumulado (resultado) até o momento e o elemento atual (bolsista) forem ambos verdadeiros, e false caso contrário. aqui, o 'resultado' e 'bolsista' serão executados em cada uma das iterações.
+
+console.log(alunos.map(a => a.bolsista).reduce(todosBolsistas));
+
+Desafio 2: Algum aluno é bolsista?
+const todosBolsistas = (resultado, bolsista) => resultado || bolsista; // um deles tem q ser bolsista, ou todos, ai por isso uso ||
+console.log(alunos.map(a => a.bolsista).reduce(algumBolsista)); // vai mostrar 'true', pois existe pelo menos um bolsista.
+
+/////////////////
+
+Reduce #03 -
+Explicando novamente o reduce2...
+
+///////////////
+
+Imperativo vs Declarativo -
+temos 2 tipos de abordagens: imperativa e a declarativa
+const alunos = [
+    {nome: 'João', nota: 7.9},
+    {nome: 'Maria', nota: 9.2}
+];
+
+// Imperativo:
+let total1 = 0;
+for(let i=0; i < alunos.length; i++) {
+    total1 += alunos[i].nota;
+}
+
+console.log(total1 / alunos.length);
+
+// Declarativo
+const alunos = [
+    {nome: 'João', nota: 7.9},
+    {nome: 'Maria', nota: 9.2}
+];
+const getNota = aluno => aluno.nota;
+const soma = (total, atual) => total + atual;
+const total2 = alunos.map(getNota).reduce(soma); // mapeie as notas de aluno e no final agregue/junta tudo a soma (reduce).
+console.log(total2 / alunos.length);
+
+/\ a forma declarativa é melhor, pois vc tem mais reuso em declarativo.
+No imperativo é exatamente a forma como tem que ser sem deixar nenhum detalhe faltando, vc diz a forma como é feita passo a passo. com a abordagem declarativa, vc se importa mais com oq tem q ser feito do que o como.
+
+//////////////////
+
+Concat -
+Método em que a ideia é q voce consiga concatenar vários arrays em um unico array ou vários elementos que voce pode passar como parametro pra um metodo concat ou outros arrays.
+
+const filhas = ['Ualeskah', 'Cibalena'];
+const filhos = ['Uoxiton', 'Uesclei'];
+const todos = filhas.concat(filhos, 'Fulano');
+console.log(todos, filhas, filhos); // 'todos' vai juntar os elementos dos arrays filhas e filhos e vai deixar em um array só.
+
+console.log([].concat([1,2], [3,4], 5, [[6, 7]])); -> o [] é um array vazio, q é um objeto, e por ser objeto posso usar o . pra chamar métodos. vai mostrar: [ 1, 2, 3, 4, 5, [ 6, 7 ] ].  somente 6 e 7 ficarão em um array dentro de um array.
+se fosse console.log(['a,b'].concat([1,2], [3,4], 5, [[6, 7]])); // iria mostrar dentro do array começando com 'a' e 'b'.
+
+//////////////////////
+
+FlatMap -
+vejamos com flatmap:
+const escola = [{
+    nome: 'Turma M1',
+    alunos: [{
+        nome: 'Gustavo',
+        nota: 8.1
+    }, {
+        nome: 'Ana',
+        nota: 9.3
+    }]
+}, {
+    nome: 'Turma M2', 
+    alunos: [{
+        nome: 'Rebeca',
+        nota: 8.9,
+    }, {
+        nome: 'Roberto',
+        nota: 7.3
+    }]
+}]
+
+// 'escola' é um array formado por objetos que representam a turma. dentro da turma, tenho a lista de alunos.
+
+const getNotaDoAluno = aluno => aluno.nota;
+const getNotasDaTurma = turma => turma.alunos.map(getNotaDoAluno);]
+
+const notas1 = escola.map(getNotasDaTurma);
+console.log(notas1);
+
+se eu der:
+console.log([].concat([8.1, 9.3], [8.9, 7.3])); // vai mostrar um unico array, a ideia do flatMap é exatamente esse.
+
+Array.prototype.flatMap = function(callback) { // aqui alem de fazer o proprio map, farei um concat também.
+    return Array.prototype.concat.apply([], this.map(callback));
+}
+
+// a ideia do FlatMap é basicamente voce ter uma matriz, vc achatar ele e ter um unico array. 
+const notas2 = escola.flatMap(getNotasDaTurma);
+console.log(notas2);
+
+///////////////
+
+Node JS:
+Construir sistemas inteiros com JavaScript. JS é a linguagem q te da a possibilidade de rodar no browser e no servidor. Node dá a possibilidade de executar JS em servidor, no back-end...
+
+//////////////
+
+Conceito de módulos NodeJS-
+como organizar uma aplicação em javascript? depende se vai ser em browser ou back-end.
+No caso de back-end, não preciso me preocupar em compactar vários arquivos em um arquivo, pois vai ser executado direto no servidor.
+Dentro do node, um arquivo representa um módulo. O node pode ser apache, servidor web, prover um video, etc, ou ele pode servir como API do seu sistema.
+Módulo tem uma certa interioridade, ele não deixa tudo aquilo que voce escreve dentro dele disponivel pra todo mundo, ele fica visivel apenas dentro do modulo. Para escrever algo no node e tornar publico/disponivel para outro arquivo, irá precisar exportar. Para exportar tem diversas formas, tem 2 padrões disponiveis.
+
+Vejamos algumas formas de exportar algo de dentro do node para outro arquivo:
+this.ola = 'Fala Pessoal'; // já posso usar essa fala em outro arquivo.
+
+// Outra forma de exportar:
+exports.bemVindo = 'Bem vindo ao Node!';
+
+// Outra forma de exportar:
+module.exports.ateLogo = 'Até próximo exemplo';
+
+
+// Outra forma de exportar e com bem mais frequencia é voce setando e atribuindo diretamente um objeto a ele. Criemos outro arquivo:
+module.exports = { // colocando um objeto e dentro coloco atributos.
+    bomDia: 'Bom Dia',
+    boaNoite() {
+        return 'Boa Noite!';
+    }
+}
+
+// Agora criamos um outro arquivo chamado moduloCliente. No curso, sempre q uma classe termina com 'cliente', significa que essa classe vai usar outros modulos:
+Pra importar algo usando CommonJS, q é o sistema de modulos no Node, vc usa Require:
+
+// Dentro do arquivo moduloCliente.js
+const moduloA = require('./moduloA'); // ./ pois estou referenciando ao modulo que está presente no mesmo diretorio do arquivo tal, aí é o caminho relativo.
+const moduloB = require('./moduloB'); // perceba que não necessariamente precisei colocar a extensão do arquivo .js , é opcional
+console.log(moduloA.ola + ' , ' + moduloA.bemVindo + ' , ' + moduloA.ateLogo + ' ,  ' + moduloB.boaNoite() + ' , ' + moduloB.bomDia);
+
+/\ os codigos que existem dentro de moduloA e moduloB agora estão dentro da constante moduloA e moduloB
+
+///////////
+
+Usando módulos de terceiros - 
+Temos o 'npm'. npm é o gerenciador de pacotes do node. Ele é o responsável por baixar certas bibliotecas de terceiros, se quiser baixar angular, jquery, qualquer um. 
+ao digitar 'npm i lodash', ele baixa uma pasta chamada 'node_modules', onde dentro terão os modulos instalados, no caso, vai mostrar o diretorio do 'lodash'.
+
+----> como fazer pra subir algo pro github com a pasta node_modules sendo ignorada?
+crie um arquivo chamado .gitignore e dentro escrevo "node_modules", q basicamente vão ignorar a pasta node_modules
+
+crio um arquivo chamado usandoModulosTerceiros.js, e vou criar uma referencia para lodash:
+const _ = require('lodash'); // coloquei _ pq é normal colocar _ quando se referencia a uma biblioteca. dentro do require coloco o modulo que tá requerendo. não coloquei o caminho relativo aqui, pois ele já procura automaticamente dentro de node_modules.
+ 
+setInterval(() => console.log(_.random(1,1000)), 2000);
+
+// dentro de usandoModulosTerceiros eu vou instalar uma dependencia chamada nodemon
+dou cd pra onde ta a pasta usandoModulosTerceiros agora e digito:
+
+nodemon usandoModulosTerceiros.js
+// /\ começará a rodar normalmente. sempre q mexer no codigo e salvar, o compilador vai alterar automaticamente.
+
+//////////////
+
+Sistema de modulos require-
+vamos usar a função 'require' pra acessar o moduloA. cria-se uma pasta A e dentro cria-se pasta B e dentro cria arquivo 'acessarModulos.js', dentro dela escrevo o codigo:
+const moduloA = require('../../moduloA'); // se colocar 'moduloa', não vai dar erro, mas pq o moduloa em windows ele não tem case sensitive, no linux ele tem, portanto sempre coloque o nome exatamente como é do arquivo.
+console.log(moduloA.ola);
+
+se eu coloco:
+const saudacao = require('saudacao'); // basta ter o diretorio 'saudacao' dentro da pasta node_modules, ele reconhecerá automaticamente. tem-se que ter o  arquivo'index.js'. 
+console.log(saudacao.ola); // vai mostrar o que tiver de module.exports dentro do index do diretorio 'saudacao'.
+
+// temos modulos que já vem previamente instalados pelo node, vejamos o modulo http:
+const http = require('http');
+http.createServer((req, res) => {
+    res.write('Bom dia!');
+    res.end();
+}).listen(8080); 
+// ao executar e botar no navegador localhost/8080 , vai mostrar 'Bom dia'.
+
+// posso fazer assim se eu quiser referenciar o index de uma pasta sem escrever o index:
+const c = require('./pastaC'); // não preciso escrever index, irá procurar pelo arquivo index já pelo padrão index.
+console.log(c.ola);
+
+// /\ irá imprimir o que tem em 'this.ola'
+
+/////////////////////////
+
+Sistema de módulos: Exports- 
+
+Já vimos que dentro do módulo do node, temos o 'this', q é uma referencia para module.exports, ou seja, module.exports === this (é true), assim como module.exports === exports (true, pq é uma outra forma de exportar).
+
+this.a = 1;
+exports.b = 2;
+module.exports.c = 3;
+
+exports = null;
+console.log(module.exports);
+
+exports = {
+    nome: 'Teste';
+}
+
+console.log(module.exports); // irá imprimir ainda {a: 1, b: 2, c: 3}, mesmo que voce tenha mudado a referencia 2 vezes, isto é, em exports = null e depois em exports = { nome 'teste'}
+
+// ou seja, se voce quiser que um objeto seja exportado, não use exports, use module.exports. sempre que precisar atribuir um novo objeto para ser exportado, obrigatoriamente deve-se usar module.exports.
+
+module.exports = {publico: true}; // no final, em outro arquivo se eu usar require no arquivo em que está esta linha de codigo, irá imprimir isto {publico: true}
+
+o this e o exports são apenas 2 referencias para um mesmo objeto que o module.exports aponta.
+
+/////////////
+
+Arquivo package.json - 
+É o arquivo descritor de um projeto em node, para criá-lo, va a um diretorio que voce queira e digite no terminal: npm init, e nele vao aparecer perguntas pra responder. caso queira que seja tudo automatico, use npm init -y.
+npm i -> instala as dependencias, se vc colocar npm i --save, alem de instalar as dependencias na pasta node_modules, ele vai criar uma area pra colocar as dependencias do seu projeto. 
+ex: npm i --save axios
+
+se eu digitasse:
+npm i --save-dev axios@0.17.1 -E , significa: 'i'(ou install), --save-dev significa que vai ter dependencia somente necessaria em desenvolvimento, não é necessaria durante a produção, então por ex poderia instalar uma dependencia de testes, depois é o nome da dependencia, o @ e a versão, e o -E significa é instalar exatamente essa versão.
+no package.json, verá que tem, por ex:  "axios": "^1.6.8", ou  "axios": "~1.6.8". a diferença: ^ permite atualizaçao maiores, por ex, 1.8.2, desde q nao quebre compatibilidade. já o ~ permite apenas atualizaçoes de correçao, por ex, 1.6.9, não permitindo, por ex, 1.7.0.
+
+vamos criar um outro arquivo chamado funcionarios.js dentro da pasta 'funcionarios.js':
+const url = 'http://files.cod3r.com.br/curso-js/funcionarios.json';
+const axios = require('axios');
+
+axios.get(url).then(response => {
+    const funcionarios = response.data; // aqui vou ter a lista de funcionarios
+    console.log(funcionarios); // vai mostrar todos os objetos de funcionarios.
+}); // método get obtém informaçoes do servidor. aqui, quando a requisiçao retornar a url, ele vai chamar o metodo then
+
+// dentro os funcionarios, pegar a chinesa com menor salario.
+
+const chineses = f => f.pais === 'China';
+const mulheres = f => f.genero === 'F';
+// agora, faremos o Reduce:
+const menorSalario = (func, funcAtual) => { // o primeiro parametro é o acumulador e o segundo parametro é o elemento atual, no caso aqui, o 1o parametro é o funcionario e o 2o parametro é o funcionario atual. o acumulador é um funcionario, pq no final quero retornar um funcionario.
+    return func.salario < funcAtual.salario ? func : funcAtual;
+}
+
+agora, dentro do axios:
+const func = funcionarios.filter(chineses).filter(mulheres).reduce(menorSalario);
+console.log(func);
+
+//////////////
+
+Instância única vs Nova instância -
+
+O node faz cache de modulos que sao importados pelo REQUIRE. Uma forma de driblar isso dentro do node é usando a função factory.
+
+- Num arquivo chamado instanciaUnica.js:
+module.exports = {
+    valor: 1,
+    inc() {
+        this.valor++; // é um método de incrementar o this.valor 
+    }
+}
+
+/\ esse objeto que representa um contador bem simples, ele terá uma instância única, pois o Node faz cache dos módulos, isto é, mantem as instancias como sendo singleton.
+
+- Agora crio arquivo instanciaNova.js:
+Como faço para fazer uma nova instancia agora já que o Node por padrão coloca um cache? Coloquemos uma factory.
+module.exports = () {
+    return {
+        valor: 1,
+        inc() {
+            this.valor++;
+        }
+    }
+}
+
+- Agora, outro arquivo chamado instanciaCliente.js:
+const contadorA = require('./instanciaUnica);
+const contadorB = require('./instanciaUnica'); // tanto o contadorA quanto o contadorB compartilham do mesmo objeto retornado
+
+const contadorC = require('./instanciaNova')(); // No caso, perceba que instanciaNova retorna uma função.
+
+// Pra eu ter acesso acesso ao objeto que de fato representa meu contador, tenho que: dentro de instanciaCliente, preciso chamar, no caso ali, chamei colocando (), ou seja, retornando um objeto, invocando a função retornada. 
+
+const contadorD = require('./instanciaNova')();
+
+contadorA.inc();
+contadorA.inc();
+console.log(contadorB.valor); // vai mostrar '3', incrementou
+
+/\ // vai mudar pois o Node faz cache dos objetos retornados, isto é, daquilo q é retornado a partir do Require. Então oq eu fizer no contador A, o contadorB tb vai saber. Foi percebido em contadorB devido ao incremento que fiz no contadorA.
+
+contadorC.inc();
+contadorC.inc();
+console.log(contadorD.valor); // aí vai mostrar apenas '1', não mostra 3, isto é, não incremetou. O que fizer no C, não reflete no D, pois com o factory você dribla o cache.
+
+
+///////////////////
+
+Objeto global no node -
+
+
+Arquivo 'global.js':
+O ideal é evitar usar o 'global' diretamente como objeto.
+global.minhaApp = {
+    saudacao() { // quando isso for de fato adicionado ao global, qualquer outro arquivo do seu sistema terá acesso ao 'minhaApp'
+        return 'Estou em todos os lugares!';
+    },
+    nome: 'Sistema Legal'
+}
+
+Arquivo globalCliente.js:
+preciso importar o global.js diretamente:
+require('./global');
+
+console.log(MinhaApp.saudacao()); // irá mostrar 'estou em todos os lugares!'
+
+posso mudar o 'nome' pelo 'minhaApp', o que não é muito ideal:
+minhaApp.nome = 'Eita!';
+console.log(MinhaApp.nome); // o objeto ficou passivel de ser modificado, vai mostrar 'Eita!'
+/\ // para consertar isso, eu poderia dar um Object.freeze:
+global.minhaApp = Object.freeze({
+    saudacao() {
+        return 'Estou em todos os lugares!'
+    },
+    nome: 'Sistema Legal'
+})
+/\ congelei o objeto, agr n consigo mais modifica-lo.
+
+//////////////
+
+Entendendo o 'This':
+O this aponta para module.exports, pode exportar algo sim usando o 'this'.
+console.log(this === global); // é false, pois this aponta para module exports, não pra global.
+
+- Dentro de função, o this não aponta para exports.
+fuinction logThis() {
+    console.log(this === exports); // retornará false
+}
+porém fora da função, aponta sim para exports. console.log(this === exports); // retornará true.
+
+this.perigo = 'Olá'; // dentro de função, o this aponta para global.
+this.perigo = 'Olá'; // fora de função, o this aponta para module.exports, não para global.
+
+//////////////
+
+Passando parametros entre módulos -
+Se um módulo retorna uma função, voce pode invocar essa função passando os parametros, e o que tiver dentro será executado. E assim que voce passa parametro de um modulo para outro.
+
+arquivo passandoParametros.js -
+module.exports = function(...nomes) {
+    return nomes.map(nome => `Boa semana ${nome}`);
+}
+
+arquivo passandoParametrosCliente.js:
+const saudacoes = require('./passandoParametros')('Ana', 'Lucas', 'João');
+console.log(saudacoes); // vai transformar os 3 parametros em uma lista de saudações.
+
+A passagem de parametros é simplesmnete colocando uma função e os parametros da função será equivalente aos parametros do módulo.
